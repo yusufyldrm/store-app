@@ -13,7 +13,7 @@ export const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
-
+  padding-top: 30px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     flex-direction: column;
@@ -86,8 +86,8 @@ export const Overlay = styled(motion.div)`
 
 export const Details = styled.div`
   width: 60vw;
-  padding-top: 50px;
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding-top: 50px;
     width: 90vw;
     margin: 0;
   }
