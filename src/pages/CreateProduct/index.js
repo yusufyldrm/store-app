@@ -3,6 +3,7 @@ import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import productStore from 'store/product.store';
 import { useNavigate } from 'react-router-dom';
+import Meta from 'helpers/Meta';
 import {
   TextInput,
   Dropdown,
@@ -66,6 +67,9 @@ const CreateProduct = observer(() => {
 
   return (
     <Wrapper>
+      <Meta
+        title={'Create Product'}
+      />
       <Title>Create Product</Title>
       <Container>
         <TextInput

@@ -76,7 +76,7 @@ class ProductStore {
       return { product: data, error: false };
     } catch (error) {
       console.log((error.request && error.response) ? `${error.request.responseURL} :: ${error.response.statusText}` : error);
-      return { product: null, error: true };
+      return { product: {}, error: true };
     }
   };
 

@@ -1,9 +1,11 @@
 import React from 'react';
+import NotFound from 'pages/NotFound';
 import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
 import productStore from 'store/product.store';
 import { Loader, Button } from 'components';
 import { priceParser, getFriction } from 'helpers';
+import Meta from 'helpers/Meta';
 import { VscError } from 'react-icons/vsc';
 import {
   Wrapper,
@@ -66,7 +68,7 @@ const ProductDetail = observer(() => {
 
   const getSingleProduct = async (id) => {
     const { product, error } = await productStore.getProduct({ id });
-    !product.category && (product.category = 'Others');
+    !product?.category && (product.category = 'Others');
     !!product && setProduct(product);
     error && setError(error);
     setLoading(true);
@@ -86,11 +88,16 @@ const ProductDetail = observer(() => {
   }
 
   if (hasError) {
-    return <div>Error</div>;
+    return <NotFound />;
   };
 
   return (
     <Wrapper>
+      <Meta
+        title={product.name}
+        description={product.description}
+        image={product.avatar}
+      />
       <Breadcrumb>
         <BreadcrumbLink to={'/'}>Home</BreadcrumbLink>
         <span style={{ margin: '0 5px', userSelect: 'none' }}>/</span>

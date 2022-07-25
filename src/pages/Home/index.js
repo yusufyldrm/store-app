@@ -6,6 +6,7 @@ import { getsinglePath } from 'utils/router';
 import { Loader } from 'components';
 import { Product, Filter } from './components';
 import { ProductsContainer, BottomButton } from './style';
+import Meta from 'helpers/Meta';
 
 const Home = observer(() => {
   const loc = useLocation();
@@ -38,6 +39,7 @@ const Home = observer(() => {
 
   return (
     <>
+      <Meta />
       <Filter
         immutableProducts={productStore.products}
         setProducts={(prods) => setProducts(prods)}
