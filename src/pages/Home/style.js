@@ -45,4 +45,5 @@ export const BottomButton = styled(motion.button)`
   border-radius: 100%;
   font-size: 70px;
   font-weight: bold;
+  user-select: none;
 `;

@@ -26,9 +26,7 @@ export const ImageContainer = styled.div`
   max-width: 400px;
   min-height: 200px;
   cursor: zoom-in;
-  border-right: 1px solid #f5f5f5;
   margin-right: 20px;
-  border-bottom: 1px solid #f5f5f5;
   min-height: 30vw;
   
   ${({ $isOpen }) =>
