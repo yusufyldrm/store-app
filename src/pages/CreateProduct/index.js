@@ -122,7 +122,7 @@ const CreateProduct = observer(() => {
           id='price'
           type='number'
           min='0'
-          onBlur={(e) => { e.target.value < 0 && handleInput('price', 0); handleInput('price', parseFloat(e.target.value)) }}
+          onBlur={(e) => { e.target.value < 0 && handleInput('price', 0); handleInput('price', parseFloat(e.target.value || 0)) }}
           label='Price'
           onChange={(e) => handleInput('price', e.target.value)}
           value={product.price.value}

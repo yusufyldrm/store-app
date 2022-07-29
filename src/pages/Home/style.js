@@ -47,3 +47,15 @@ export const BottomButton = styled(motion.button)`
   font-weight: bold;
   user-select: none;
 `;
+
+export const ErrorContainer = styled.div`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: -5;
+`;

@@ -3,7 +3,9 @@ import api from 'api';
 
 class ProductStore {
   categories = [];
+  categoriesError = false;
   products = [];
+  productsError = false;
   isLoaded = false;
 
   constructor() {
@@ -11,6 +13,8 @@ class ProductStore {
       categories: observable,
       products: observable,
       isLoaded: observable,
+      productsError: observable,
+      categoriesError: observable,
       getCategories: action,
       getAllProducts: action,
       getProduct: action,
@@ -32,6 +36,14 @@ class ProductStore {
     this.isLoaded = status;
   };
 
+  setCategoriesError = (status) => {
+    this.categoriesError = status;
+  };
+
+  setProductsError = (status) => {
+    this.productsError = status;
+  };
+
   initialize = async () => {
     await this.getCategories();
     await this.getAllProducts();
@@ -42,7 +54,9 @@ class ProductStore {
     try {
       const { data } = await api.get('/categories');
       this.setCategories(data);
+      this.setCategoriesError(false);
     } catch (error) {
+      this.setCategoriesError(true);
       console.log((error.request && error.response) ? `${error.request.responseURL} :: ${error.response.statusText}` : error);
     }
   };
@@ -65,7 +79,9 @@ class ProductStore {
       const categorized = this.categorizeProducts(data, this.categories);
       this.setProducts(data);
       this.setCategories(categorized);
+      this.setProductsError(false);
     } catch (error) {
+      this.setProductsError(true);
       console.log((error.request && error.response) ? `${error.request.responseURL} :: ${error.response.statusText}` : error);
     }
   };
