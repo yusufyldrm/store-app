@@ -69,8 +69,8 @@ const Home = observer(() => {
       <ProductsContainer>
         {products.length > 0 ? products.map((product) => (
           <Product
-            key={product.id}
-            idx={product.id}
+            key={product._id}
+            idx={product._id}
             name={product.name}
             price={product.price}
             avatar={product.avatar}

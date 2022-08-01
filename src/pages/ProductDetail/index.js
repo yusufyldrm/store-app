@@ -76,9 +76,10 @@ const ProductDetail = observer(() => {
 
   const deleteProduct = async () => {
     setProcess(true);
-    const { result } = await productStore.deleteProduct({ id: productId });
+    const { result, error } = await productStore.deleteProduct({ id: productId });
     console.log('result', result);
-    navigate('/')
+    !error && navigate('/');
+    setProcess(false);
   };
 
   if (!isLoading) {

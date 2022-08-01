@@ -1,5 +1,5 @@
 import api, { API_URL } from 'api';
-import { product } from './__mock__';
+import { mockProduct } from './__mock__';
 import Header from 'components/Header';
 import TextInput from 'components/TextInput';
 import Button from 'components/Button';
@@ -9,16 +9,30 @@ import {
   render,
   waitFor
 } from './test-utils';
+import Home from 'pages/Home';
 
 describe('Testing Components', () => {
-  it('should register text in header', () => {
+  it('Home Page is rendering', () => {
+    const screen = render(<Home />);
+    expect(screen.getByText('Loading')).toBeInTheDocument();
+  });
+
+  it('should click the product on the screen', () => {
+    const prodContainer = screen.queryByTestId('product-container');
+    waitFor(() => {
+      expect(prodContainer).toBeInTheDocument();
+      prodContainer.querySelector('a').click();
+    }, 2000);
+  });
+
+  it('should register text in header', async () => {
     const { container } = render(<Header />)
     const linkElement = screen.getByText(/Register/i);
     expect(linkElement).toBeInTheDocument();
     expect(container.children).toMatchSnapshot();
   });
 
-  it('should render text input', () => {
+  it('should render text input', async () => {
     const { container } = render(<TextInput id={'test'} onChange={() => { }} />)
     const input = container.querySelector('input');
     input.value = 'test';
@@ -57,35 +71,6 @@ describe('Testing Components', () => {
 });
 
 describe('Testing Api', (prod) => {
-  it('should load user data', async () => {
-    const { data } = await api.get(`${API_URL}/products`);
-    expect(data).toBeDefined();
-    expect(data).toBeInstanceOf(Array);
-  });
-
-  it('should create a product', async () => {
-    const { data } = await api.post(`${API_URL}/products`, product);
-    waitFor(() => {
-      expect(data).toBeDefined();
-      expect(data).toBeInstanceOf(Object);
-      prod = data;
-    }, 2000);
-  });
-
-  it('should get the created product', async () => {
-    const { data } = await api.get(`${API_URL}/products/${prod.id}`);
-    expect(data).toBeDefined();
-    expect(data).toMatchObject(prod);
-  });
-
-  it('should delete a product', async () => {
-    const { data } = await api.delete(`${API_URL}/products/${prod.id}`);
-    waitFor(() => {
-      expect(data).toBeDefined();
-      expect(data).toBeInstanceOf(Object);
-    }, 2000);
-  });
-
   it('should get the categories', async () => {
     const { data } = await api.get(`${API_URL}/categories`);
     waitFor(() => {
@@ -94,4 +79,32 @@ describe('Testing Api', (prod) => {
     }, 2000);
   });
 
+  it('should load user data', async () => {
+    const { data: { products } } = await api.get(`${API_URL}/products`);
+    expect(products).toBeDefined();
+    expect(products).toBeInstanceOf(Array);
+  });
+
+  it('should create a product', async () => {
+    const { data: { product } } = await api.post(`${API_URL}/products`, mockProduct);
+    waitFor(() => {
+      expect(product).toBeDefined();
+      expect(product).toBeInstanceOf(Object);
+      prod = product;
+    }, 2000);
+  });
+
+  it('should get the created product', async () => {
+    const { data: { product } } = await api.get(`${API_URL}/products/${prod._id}`);
+    expect(product).toBeDefined();
+    expect(product).toMatchObject(prod);
+  });
+
+  it('should delete a product', async () => {
+    const { data } = await api.delete(`${API_URL}/products/${prod._id}`);
+    waitFor(() => {
+      expect(data).toBeDefined();
+      expect(data).toBeInstanceOf(Object);
+    }, 2000);
+  });
 });

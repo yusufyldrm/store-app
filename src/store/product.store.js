@@ -53,7 +53,7 @@ class ProductStore {
   getCategories = async () => {
     try {
       const { data } = await api.get('/categories');
-      this.setCategories(data);
+      this.setCategories(data.categories || []);
       this.setCategoriesError(false);
     } catch (error) {
       this.setCategoriesError(true);
@@ -67,7 +67,7 @@ class ProductStore {
         throw new Error('id is required');
       }
       const { data } = await api.get(`/categories/${id}`);
-      this.setCategories(data);
+      this.setCategories(data.category);
     } catch (error) {
       console.log((error.request && error.response) ? `${error.request.responseURL} :: ${error.response.statusText}` : error);
     }
@@ -76,8 +76,9 @@ class ProductStore {
   getAllProducts = async () => {
     try {
       const { data } = await api.get('/products');
-      const categorized = this.categorizeProducts(data, this.categories);
-      this.setProducts(data);
+      const prods = data.products || [];
+      const categorized = this.categorizeProducts(prods, this.categories);
+      this.setProducts(prods);
       this.setCategories(categorized);
       this.setProductsError(false);
     } catch (error) {
@@ -89,7 +90,11 @@ class ProductStore {
   getProduct = async ({ id }) => {
     try {
       const { data } = await api.get(`/products/${id}`);
-      return { product: data, error: false };
+      const product = data.product;
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      return { product: product, error: false };
     } catch (error) {
       console.log((error.request && error.response) ? `${error.request.responseURL} :: ${error.response.statusText}` : error);
       return { product: {}, error: true };
@@ -123,7 +128,12 @@ class ProductStore {
   deleteProduct = async ({ id }) => {
     try {
       const { data } = await api.delete(`/products/${id}`);
-      return { result: data, error: false };
+      const product = data.product;
+      console.log(data);
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      return { result: product, error: false };
     } catch (error) {
       console.log((error.request && error.response) ? `${error.request.responseURL} :: ${error.response.statusText}` : error);
       return { result: error, error: true };
